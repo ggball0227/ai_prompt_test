@@ -10,18 +10,11 @@ const api = {
     "Content-Type": "application/json",
   },
 };
-
-const form_headers = {
-  "content-type": "multipart/form-data",
-};
-
-export const registerUser = (data) =>
-  fetch(`${api.baseURL}/login/register`, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: api.headers,
-  });
-
+/**
+ * 登录
+ * @param user 账号
+ * @returns
+ */
 export const loginUser = (user) =>
   c_fetch(`${api.baseURL}/login/login`, {
     method: "POST",
@@ -35,44 +28,30 @@ export const smsCodeSender = (phoneNumbers) =>
     method: "POST",
   });
 
-export const getUsers = (cookie) => {
-  const token = Cookies.get("cookie");
-
-  console.log("token", token);
+/**
+ * 获取用户信息
+ * @api /api/userInfo/getInfo
+ */
+export const getUsers = () => {
   c_fetch(`${api.baseURL}/api/userInfo/getInfo`, {
-    method: "POST",
+    method: "GET",
     headers: new Headers({
       "Content-Type": "application/json; charset=UTF-8",
-      token: token,
     }),
-  }).then((res: any) => {
-    console.log("res", res);
+  }).then((data: any) => {
+    if (data.status != 200) {
+      return;
+    }
+    saveUser(data.data);
   });
-  // fetch(`${api.baseURL}/api/userInfo/getInfo`, {
-  //   method: "POST",
-  //   credentials: "include",
-  //   headers: new Headers({
-  //     "Content-Type": "application/json; charset=UTF-8",
-  //     token: token,
-  //   }),
-  // })
-  //   .then((response: any) => {
-  //     if (response.ok) {
-  //       // 返回响应结果的 JSON 格式
-  //       return response.json();
-  //     } else {
-  //       console.log("userInfo/getInfo Network response was not ok.");
-  //       throw new Error("userInfo/getInfo Network response was not ok.");
-  //     }
-  //   })
-  //   .then((data) => {
-  //     if (data.status != 200) {
-  //       return;
-  //     }
-  //     console.log("data", data);
-  //     saveUser(data.data);
-  //   });
 };
+
+export const registerUser = (data) =>
+  fetch(`${api.baseURL}/login/register`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: api.headers,
+  });
 
 export const addPrompt = (data) =>
   fetch(

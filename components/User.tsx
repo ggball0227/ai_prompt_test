@@ -3,26 +3,29 @@ import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-import { smsCodeSender,registerUser,loginUser,getUsers } from "../pages/api/backend";
+import {
+  smsCodeSender,
+  registerUser,
+  loginUser,
+  getUsers,
+} from "../pages/api/backend";
 import getIp from "../utils/ipUtil";
-import { saveUser } from "../utils/store";
+import { saveUser, removeUser } from "../utils/store";
 import Cookies from "js-cookie";
-
 /**
  *
  * @returns 登录表单
  */
 export function LoginForm() {
   const [showModal, setShowModal] = useState(false);
-  const [cookies, setCookie] = useCookies(["Cookie"]);
   const router = useRouter();
 
   const handleLogin = async (e: any) => {
-    const phoneNumber = (document.getElementById("phoneNumber") as HTMLInputElement)
-      .value;
+    const phoneNumber = (
+      document.getElementById("phoneNumber") as HTMLInputElement
+    ).value;
     const password = (document.getElementById("password") as HTMLInputElement)
       .value;
-  
 
     if (
       phoneNumber === "" ||
@@ -35,54 +38,37 @@ export function LoginForm() {
     }
 
     let user = {
-      "phoneNumbers":phoneNumber,
-      "password": password
-    }
+      phoneNumbers: phoneNumber,
+      password: password,
+    };
 
     // console.log("username:"+username+"password:"+password)
     try {
       // 登录api
-      const response: any = await loginUser(user)
-      
-      let headers = response.headers
-      console.log(headers.get("cookie"))
-      if(headers.get("cookie") == null || headers.get("cookie") == "") {
-        toast.error("登陆失败！");
-        return
+      const token = Cookies.get("cookie") || "";
+      if (token) {
+        await getUsers();
+      } else {
+        await loginUser(user);
+        if (!Cookies.get("cookie")) {
+          toast.error("登陆失败！");
+          // 清除用户信息
+          removeUser()
+          return;
+        }
+        await getUsers();
       }
-      let cookie = headers.get("cookie")
-      Cookies.set("cookie", cookie);
-      console.log(cookie)
-      await getUsers(cookie)
-
-      // if(registerUser == null) {
-      //   toast.error("登陆失败！");
-      //   return
-      // }
-
-      // setCookie(
-      //   "Cookie",
-      //   cookie,
-      //   {
-      //     path: "/",
-      //     maxAge: 86400, // cookeie 一小时后过期
-      //     sameSite: true,
-      //   }
-      // );
-
-     
-      // toast.success("登陆成功！");
-      // setShowModal(false);
-      // router.reload()
-      
-
+      if (registerUser == null) {
+        toast.error("登陆失败！");
+        return;
+      }
+      toast.success("登陆成功！");
+      setShowModal(false);
+      router.reload();
     } catch (err) {
       console.log(err);
       toast.error("登陆失败！");
-
     }
-
-   
   };
 
   const loginTextOpacityClick = (e) => {
@@ -161,7 +147,10 @@ export function LoginForm() {
 
                     <div className="mt-5 sm:flex sm:items-center flex-col">
                       <div className="w-full sm:max-w-xs mb-4 flex-row">
-                        <label htmlFor="phoneNumber" className="text-left inline-block text-gray-700 text-sm font-bold mb-2">
+                        <label
+                          htmlFor="phoneNumber"
+                          className="text-left inline-block text-gray-700 text-sm font-bold mb-2"
+                        >
                           手机号
                         </label>
                         <input
@@ -173,7 +162,10 @@ export function LoginForm() {
                         />
                       </div>
                       <div className=" w-full sm:max-w-xs mb-4">
-                        <label htmlFor="password" className="text-left inline-block text-gray-700 text-sm font-bold mb-2">
+                        <label
+                          htmlFor="password"
+                          className="text-left inline-block text-gray-700 text-sm font-bold mb-2"
+                        >
                           密码
                         </label>
                         <input
@@ -236,42 +228,43 @@ export function RegisterForm() {
 
   const handleSendCode = () => {
     setIsSending(true);
-    const phoneNumber = (document.getElementById("phoneNumber") as HTMLInputElement)
-    .value;
+    const phoneNumber = (
+      document.getElementById("phoneNumber") as HTMLInputElement
+    ).value;
     smsCodeSender(phoneNumber)
-    .then(response => {
-      if (response.ok) {
-        // 返回响应结果的 JSON 格式
-        return response.json();
-      } else {
-        console.log("registerUser Network response was not ok.");
-      }
-    })
-    .then(data => {
-      if(data.status != 200) {
-        toast.error(data.message);
-        return
-      }
-      toast.success("验证码发送成功！")
-    })
-    .catch(e => {
-      toast.error(e);
-    })
+      .then((response) => {
+        if (response.ok) {
+          // 返回响应结果的 JSON 格式
+          return response.json();
+        } else {
+          console.log("registerUser Network response was not ok.");
+        }
+      })
+      .then((data) => {
+        if (data.status != 200) {
+          toast.error(data.message);
+          return;
+        }
+        toast.success("验证码发送成功！");
+      })
+      .catch((e) => {
+        toast.error(e);
+      });
   };
-
-
 
   const handleRegister = (e: any) => {
     const username = (document.getElementById("username") as HTMLInputElement)
       .value;
     const password = (document.getElementById("password") as HTMLInputElement)
       .value;
-      const phoneNumber = (document.getElementById("phoneNumber") as HTMLInputElement)
+    const phoneNumber = (
+      document.getElementById("phoneNumber") as HTMLInputElement
+    ).value;
+    const smscode = (document.getElementById("smscode") as HTMLInputElement)
       .value;
-      const smscode = (document.getElementById("smscode") as HTMLInputElement)
-      .value;
-      const invitationCode = (document.getElementById("invitationCode") as HTMLInputElement)
-      .value;
+    const invitationCode = (
+      document.getElementById("invitationCode") as HTMLInputElement
+    ).value;
 
     // console.log("username:"+username+"password:"+password)
     if (
@@ -281,7 +274,7 @@ export function RegisterForm() {
       password == null ||
       phoneNumber === "" ||
       phoneNumber == null ||
-      smscode === "" || 
+      smscode === "" ||
       smscode == null
     ) {
       toast.error("账号密码或手机号不能为空");
@@ -289,45 +282,40 @@ export function RegisterForm() {
     }
 
     let user = {
-      "phoneNumbers":phoneNumber,
-      "userName":username,
-      "password":password,
-      "verificationCode":smscode,
-      "ipaddress":getIp(),
-      "invitationCode": invitationCode
-
-    }
+      phoneNumbers: phoneNumber,
+      userName: username,
+      password: password,
+      verificationCode: smscode,
+      ipaddress: getIp(),
+      invitationCode: invitationCode,
+    };
 
     try {
       // 注册api
       registerUser(user)
-      .then(response => {
-        if (response.ok) {
-          // 返回响应结果的 JSON 格式
-          return response.json();
-        } else {
-          console.log("registerUser Network response was not ok.");
-          throw new Error('registerUser Network response was not ok.');
-        }
-      }).then(data => {
-        if(data.status != 200) {
-          toast.error(data.message);
-          return
-        }
-        console.log(data)
-        console.log(cookies);
-        setShowModal(false);
-        toast.success("注册成功！");
-        router.push("/");
-      })
-      
-    
-
-     
+        .then((response) => {
+          if (response.ok) {
+            // 返回响应结果的 JSON 格式
+            return response.json();
+          } else {
+            console.log("registerUser Network response was not ok.");
+            throw new Error("registerUser Network response was not ok.");
+          }
+        })
+        .then((data) => {
+          if (data.status != 200) {
+            toast.error(data.message);
+            return;
+          }
+          console.log(data);
+          console.log(cookies);
+          setShowModal(false);
+          toast.success("注册成功！");
+          router.push("/");
+        });
     } catch (err) {
       console.log(err);
     }
-   
   };
 
   const loginTextOpacityClick = (e) => {

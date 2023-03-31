@@ -4,62 +4,54 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import { useCookies } from "react-cookie";
 import toast, { Toaster } from "react-hot-toast";
-import { addPrompt, getPromptTypeList } from "../pages/api/backend";
+import { addPrompt, getPromptTypeList, getUsers } from "../pages/api/backend";
 import { removeUser, retrieveUser } from "../utils/store";
 import { LoginForm, RegisterForm } from "./User";
 import { isMobile } from "../utils/toolUtil";
 import { isMobileOnly } from "react-device-detect";
 import api, {getCookie} from "../pages/api/backend";
 import { saveUser } from "../utils/store";
+import Cookies from "js-cookie";
+import c_fetch from "../pages/api/fetch";
 
 export default function Nav() {
-  const [cookies, setCookie, removeCookie] = useCookies(["Cookie"]);
   const [showAddPromptModal, setShowAddPromptModal] = useState(true);
   const [showLoginBtn, setshowLoginBtn] = useState(false);
   const [user, setUser] = useState({});
 
-  const getUsers = () => {
-    fetch(`${api.baseURL}/api/userInfo/getInfo`,{
-      // fetch跨域不会携带cookie ，需要加上这行
-      credentials: 'include',
-      method: 'GET',
-      headers: {
-        'Cookie': getCookie(),
-        'Content-Type': 'application/json',
+  // 获取用户信息，获取失败退出登录并清除本地用户信息
+  const getUserFetch = async () => {
+    c_fetch(`${api.baseURL}/api/userInfo/getInfo`, {
+      method: "GET",
+      headers: new Headers({
+        "Content-Type": "application/json; charset=UTF-8",
+      }),
+    }).then((data: any) => {
+      if (data.status != 200) {
+        return;
       }
-    })
-    .then(response => {
-      if (response.ok) {
-        // 返回响应结果的 JSON 格式
-        return response.json();
+      saveUser(data.data);
+      setUser(data.data);
+      if (data.data && Cookies.get("cookie")) {
+        setshowLoginBtn(false)
       } else {
-        console.log("userInfo/getInfo Network response was not ok.");
-        throw new Error('userInfo/getInfo Network response was not ok.');
+        setshowLoginBtn(true)
+        Cookies.remove('cookie')
+        removeUser()
       }
-    }).then(data => {
-      if(data.status != 200) {
-        return
-      }
-      console.log(data)
-      saveUser(data.data)
-
-  });
-}
-
-
-  useEffect(() => {
-    setshowLoginBtn(cookies.Cookie == null);
-    let user = retrieveUser()
-    setUser(user);
-
+    });
     if(isMobileOnly) {
       setShowAddPromptModal(false)
     }
-    // getUsers()
-  }, [cookies]);
+  }
+
+  useEffect(() => {
+    getUserFetch()
+  }, []);
 
   const handelLogout = () => {
-    removeCookie("Cookie");
+    setshowLoginBtn(true)
+    Cookies.remove('cookie')
     removeUser()
     toast.success("退出成功！");
   };
@@ -114,7 +106,7 @@ export default function Nav() {
                     <div className="w-25 absolute text-sm top-16 -left-5 bg-white border border-gray-300 rounded-md shadow-lg z-10">
                       <p className="p-2">
                         当前剩余次数:
-                        {user == null ? -1 : user["integral"]}
+                        {user == null ? -1 : user["numberTimes"]}
                       </p>
                       <a className="p-2" onClick={handelLogout}>
                         退出
