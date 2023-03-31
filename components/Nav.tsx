@@ -7,16 +7,17 @@ import toast, { Toaster } from "react-hot-toast";
 import { addPrompt, getPromptTypeList, getUsers } from "../pages/api/backend";
 import { removeUser, retrieveUser } from "../utils/store";
 import { LoginForm, RegisterForm } from "./User";
-import { isMobile } from "../utils/toolUtil";
 import { isMobileOnly } from "react-device-detect";
-import api, {getCookie} from "../pages/api/backend";
+import api from "../pages/api/backend";
 import { saveUser } from "../utils/store";
 import Cookies from "js-cookie";
 import c_fetch from "../pages/api/fetch";
+import Money from "../pages/showMoney/enter";
 
 export default function Nav() {
   const [showAddPromptModal, setShowAddPromptModal] = useState(true);
   const [showLoginBtn, setshowLoginBtn] = useState(true);
+  const [showMoney, setShowMoney] = useState(true)
   const [user, setUser] = useState({});
 
   // 获取用户信息，获取失败退出登录并清除本地用户信息
@@ -88,8 +89,8 @@ export default function Nav() {
             </div>
 
             <div className="ml-auto flex flex-row">
-            {showAddPromptModal && <AddPromptButton />}
-              
+              { !showLoginBtn && showMoney && <Money /> }
+              {showAddPromptModal && <AddPromptButton />}
               {showLoginBtn && <LoginForm />}
               {showLoginBtn && <RegisterForm />}
               {!showLoginBtn && (

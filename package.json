@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
     "@headlessui/react": "^1.7.7",
     "@headlessui/tailwindcss": "^0.1.2",
     "@heroicons/react": "^2.0.13",

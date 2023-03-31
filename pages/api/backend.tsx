@@ -3,7 +3,7 @@ import { saveUser } from "../../utils/store";
 import Cookies from "js-cookie";
 import c_fetch from "./fetch";
 
-const api = {
+export const api = {
   // baseURL: 'http://127.0.0.1:9500/tool',
   baseURL: "https://toolkit.show/tool",
   headers: {
@@ -45,6 +45,12 @@ export const getUsers = () => {
     saveUser(data.data);
   });
 };
+
+/**
+ * 获取会员信息
+ * @api /tool/api/pay/gpt/package/list
+ */
+
 
 export const registerUser = (data) =>
   fetch(`${api.baseURL}/login/register`, {
