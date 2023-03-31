@@ -49,7 +49,8 @@ export function LoginForm() {
       if (token) {
         await getUsers();
       } else {
-        await loginUser(user);
+        const res = await loginUser(user);
+        console.log('aaa', res, Cookies.get("cookie"))
         if (!Cookies.get("cookie")) {
           toast.error("登陆失败！");
           // 清除用户信息
@@ -206,7 +207,6 @@ export function LoginForm() {
  */
 export function RegisterForm() {
   const [showModal, setShowModal] = useState(false);
-  const [cookies, setCookie] = useCookies(["Cookie"]);
   const router = useRouter();
 
   const [isSending, setIsSending] = useState(false);
@@ -307,8 +307,6 @@ export function RegisterForm() {
             toast.error(data.message);
             return;
           }
-          console.log(data);
-          console.log(cookies);
           setShowModal(false);
           toast.success("注册成功！");
           router.push("/");

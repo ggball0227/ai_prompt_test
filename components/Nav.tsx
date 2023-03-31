@@ -16,7 +16,7 @@ import c_fetch from "../pages/api/fetch";
 
 export default function Nav() {
   const [showAddPromptModal, setShowAddPromptModal] = useState(true);
-  const [showLoginBtn, setshowLoginBtn] = useState(false);
+  const [showLoginBtn, setshowLoginBtn] = useState(true);
   const [user, setUser] = useState({});
 
   // 获取用户信息，获取失败退出登录并清除本地用户信息
@@ -24,16 +24,17 @@ export default function Nav() {
     c_fetch(`${api.baseURL}/api/userInfo/getInfo`, {
       method: "GET",
       headers: new Headers({
-        "Content-Type": "application/json; charset=UTF-8",
+        "Content-Type": "application/json;",
       }),
     }).then((data: any) => {
       if (data.status != 200) {
         return;
       }
-      saveUser(data.data);
-      setUser(data.data);
+      console.log('data.data ', data )
       if (data.data && Cookies.get("cookie")) {
         setshowLoginBtn(false)
+        saveUser(data.data);
+        setUser(data.data);
       } else {
         setshowLoginBtn(true)
         Cookies.remove('cookie')
@@ -108,9 +109,9 @@ export default function Nav() {
                         当前剩余次数:
                         {user == null ? -1 : user["numberTimes"]}
                       </p>
-                      <a className="p-2" onClick={handelLogout}>
+                      <p className="p-2" style={{width: '100%'}} onClick={handelLogout}>
                         退出
-                      </a>
+                      </p>
                     </div>
                   )}
                 </div>

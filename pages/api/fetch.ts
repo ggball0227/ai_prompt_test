@@ -20,12 +20,13 @@ function c_fetch(input: any, init: any) {
     //发起fetch请求，fetch请求的形参是接收上层函数的形参
     fetch(input, init)
       .then((res: any) => {
-        console.log('res1', res, res.headers.get('cookie'))
+        // console.log('res1', res, res.headers.get('cookie'))
+        if(res.headers.get('cookie')) {
+          Cookies.set('cookie', res.headers.get('cookie'))
+        }
         //将拦截器处理后的响应结果resolve出去
-        if (res.ok) {
+        if (res.ok && !res.url.includes('/login/login')) {
           res = res.json()
-        } else {
-          throw new Error("userInfo/getInfo Network response was not ok.");
         }
         resolve(res);
       })
