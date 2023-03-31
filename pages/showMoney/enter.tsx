@@ -13,6 +13,7 @@ const Money = () => {
   const [show, setShow] = useState(false)
 
   const showModal = () => {
+    setShow(false)
     setIsModalOpen(true);
   };
 
