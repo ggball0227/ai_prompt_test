@@ -87,6 +87,7 @@ const Money = () => {
           return;
         }
         if(res.data === 1) {
+          setIsModalOpen(false);
           setShow(true)
           clearInterval(inter)
           toast.success("支付成功");
