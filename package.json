@@ -23,6 +23,7 @@
     "marked": "^4.2.12",
     "next": "latest",
     "next-intl": "^2.10.2",
+    "qrcode.react": "^3.1.0",
     "react": "18.2.0",
     "react-cookie": "^4.1.1",
     "react-device-detect": "^2.2.3",
