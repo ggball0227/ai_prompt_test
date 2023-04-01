@@ -110,6 +110,10 @@ export default function Nav() {
                         当前剩余次数:
                         {user == null ? -1 : user["numberTimes"]}
                       </p>
+                      <p className="p-2">
+                        邀请码:
+                        {user == null ? -1 : user["invitationCode"]}
+                      </p>
                       <p className="p-2" style={{width: '100%'}} onClick={handelLogout}>
                         退出
                       </p>

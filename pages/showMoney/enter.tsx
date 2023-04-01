@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Modal, Button } from "antd";
+import { Modal } from "antd";
 import { LikeOutlined } from "@ant-design/icons";
 import { api } from "../../pages/api/backend";
 import c_fetch from "../../pages/api/fetch";
@@ -43,6 +43,7 @@ const Money = () => {
   // 购买
   const actionClick = () => {
     setShow(true)
+    setWidth(300)
     // 订单号：生成规则就是 dg+ 时间戳 + 后四位随机
     const orderNum = 'dg' + new Date().getTime() + parseInt((Math.random() * 10000).toString())
     console.log('order', orderNum)
@@ -59,12 +60,11 @@ const Money = () => {
           return;
         }
         setUrl(res.data.qrCode)
-        setWidth(300)
         clearInterval(inter)
         if(res.data.qrCode && !inter) {
           inter = setInterval(() => {
             notifyAll(orderNum)
-          }, 10 * 1000)
+          }, 1000)
         }
       });
     } catch (error) {
@@ -86,10 +86,10 @@ const Money = () => {
         if (res.status != 200) {
           return;
         }
-        console.log('res', res)
         if(res.data === 1) {
-          toast.success("支付成功");
+          setShow(true)
           clearInterval(inter)
+          toast.success("支付成功");
           router.reload();
         }
       });
@@ -171,12 +171,12 @@ const Money = () => {
                       >
                         ¥{item.amount}
                       </span>
-                      <span>/每月</span>
+                      <span>/元</span>
                     </div>
                     <div className="m_list">
                       <LikeOutlined />
                       <span style={{ marginLeft: 5 }}>
-                        免费使用{item.nums}/月
+                        免费使用{item.nums}次
                       </span>
                     </div>
                     <div className="m_list">
