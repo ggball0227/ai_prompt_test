@@ -63,7 +63,7 @@ const Money = () => {
         clearInterval(inter)
         if(res.data.qrCode && !inter) {
           inter = setInterval(() => {
-            notifyAll(orderNum)
+            notifyAll(orderNum, action)
           }, 1000)
         }
       });
@@ -75,7 +75,7 @@ const Money = () => {
   }
 
   // 支付回调
-  const notifyAll = (orderNum: string) => {
+  const notifyAll = (orderNum: string, item: any) => {
     try {
       c_fetch(`${api.baseURL}/api/pay/order/pay/status?orderNum=${orderNum}`, {
         method: "GET",
@@ -90,8 +90,10 @@ const Money = () => {
           setIsModalOpen(false);
           setShow(true)
           clearInterval(inter)
-          toast.success("支付成功");
-          router.reload();
+          toast.success("尊贵的" + retrieveUser().userName + ',您的' + item.name + "已支付成功，请查收");
+          setTimeout(() => {
+            router.reload();
+          }, 1000)
         }
       });
     } catch (error) {
