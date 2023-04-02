@@ -44,21 +44,17 @@ export function LoginForm() {
 
     // console.log("username:"+username+"password:"+password)
     try {
+      Cookies.remove('cookie')
       // 登录api
-      const token = Cookies.get("cookie") || "";
-      if (token) {
-        await getUsers();
-      } else {
-        const res = await loginUser(user);
-        console.log('aaa', res, Cookies.get("cookie"))
-        if (!Cookies.get("cookie")) {
-          toast.error("登陆失败！");
-          // 清除用户信息
-          removeUser()
-          return;
-        }
-        await getUsers();
+      const res = await loginUser(user);
+      console.log('aaa', res, Cookies.get("cookie"))
+      if (!Cookies.get("cookie")) {
+        toast.error("登陆失败！");
+        // 清除用户信息
+        removeUser()
+        return;
       }
+      await getUsers();
       if (registerUser == null) {
         toast.error("登陆失败！");
         return;

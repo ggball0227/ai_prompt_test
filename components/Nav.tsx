@@ -16,7 +16,7 @@ import Money from "../pages/showMoney/enter";
 
 export default function Nav() {
   const [showAddPromptModal, setShowAddPromptModal] = useState(true);
-  const [showLoginBtn, setshowLoginBtn] = useState(true);
+  const [showLoginBtn, setShowLoginBtn] = useState(true);
   const [showMoney, setShowMoney] = useState(true)
   const [user, setUser] = useState({});
 
@@ -33,11 +33,11 @@ export default function Nav() {
       }
       console.log('data.data ', data )
       if (data.data && Cookies.get("cookie")) {
-        setshowLoginBtn(false)
+        setShowLoginBtn(false)
         saveUser(data.data);
         setUser(data.data);
       } else {
-        setshowLoginBtn(true)
+        setShowLoginBtn(true)
         Cookies.remove('cookie')
         removeUser()
       }
@@ -52,7 +52,7 @@ export default function Nav() {
   }, []);
 
   const handelLogout = () => {
-    setshowLoginBtn(true)
+    setShowLoginBtn(true)
     Cookies.remove('cookie')
     removeUser()
     toast.success("退出成功！");
