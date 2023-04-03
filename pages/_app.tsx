@@ -4,6 +4,7 @@ import { NextIntlProvider } from 'next-intl'
 import "../styles/globals.css";
 import "../styles/markdown.css";
 import "../styles/cord.css";
+import '../styles/home.css'
 import { CookiesProvider } from "react-cookie";
 
 
