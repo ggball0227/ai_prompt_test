@@ -263,19 +263,35 @@ export function RegisterForm() {
     ).value;
 
     // console.log("username:"+username+"password:"+password)
-    if (
-      username === "" ||
-      username == null ||
-      password === "" ||
-      password == null ||
-      phoneNumber === "" ||
-      phoneNumber == null ||
-      smscode === "" ||
-      smscode == null
-    ) {
-      toast.error("账号密码或手机号不能为空");
-      return;
+    if(!username) {
+      toast.error("用户名不能为空");
+      return
     }
+    if(!password) {
+      toast.error("密码不能为空");
+      return
+    }
+    if(!phoneNumber) {
+      toast.error("手机号不能为空");
+      return
+    }
+    if(!smscode) {
+      toast.error("验证码不能为空");
+      return
+    }
+    // if (
+    //   username === "" ||
+    //   username == null ||
+    //   password === "" ||
+    //   password == null ||
+    //   phoneNumber === "" ||
+    //   phoneNumber == null ||
+    //   smscode === "" ||
+    //   smscode == null
+    // ) {
+    //   toast.error("账号密码或手机号不能为空");
+    //   return;
+    // }
 
     let user = {
       phoneNumbers: phoneNumber,
@@ -308,6 +324,7 @@ export function RegisterForm() {
           router.push("/");
         });
     } catch (err) {
+      toast.error("系统异常，请联系管理员！！！");
       console.log(err);
     }
   };
@@ -388,7 +405,10 @@ export function RegisterForm() {
                     </h3>
 
                     <div className="mt-5 sm:flex sm:items-center flex-col">
-                      <div className="w-full sm:max-w-xs mb-4">
+                      
+                      <div className="w-full sm:max-w-xs">
+                      <span>账号</span>
+
                         <label htmlFor="username" className="sr-only">
                           账号
                         </label>
@@ -400,7 +420,8 @@ export function RegisterForm() {
                           placeholder="账号"
                         />
                       </div>
-                      <div className=" w-full sm:max-w-xs mb-4">
+                      <div className=" w-full sm:max-w-xs">
+                      <span>密码</span>
                         <label htmlFor="password" className="sr-only">
                           密码
                         </label>
@@ -413,7 +434,8 @@ export function RegisterForm() {
                         />
                       </div>
                       <div className=" w-full sm:max-w-xs mb-4">
-                        <label htmlFor="phoneNumber" className="sr-only">
+                        <span>手机号</span>
+                        <div><label htmlFor="phoneNumber" className="sr-only">
                           手机号
                         </label>
                         <input
@@ -422,9 +444,9 @@ export function RegisterForm() {
                           id="phoneNumber"
                           className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                           placeholder="手机号"
-                        />
+                        /></div>
                       </div>
-                      <div className="flex flex-col items-center justify-center mb-4">
+                      <div className="flex flex-col items-center justify-center">
                         <div className="flex flex-row items-center justify-center">
                           <input
                             type="text"
@@ -446,6 +468,7 @@ export function RegisterForm() {
                         </div>
                       </div>
                       <div className="w-full sm:max-w-xs mb-4">
+                        <span>邀请码</span>
                         <label htmlFor="invitationCode" className="sr-only">
                           选填邀请码
                         </label>
