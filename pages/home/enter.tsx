@@ -133,7 +133,7 @@ const Home = () => {
                   {data["title"]}
                 </div>
                 <div className="home_window-header-sub-title__9rZM1">
-                  {data["slogan"]}
+                  {data["slogan"]}  { list.length - 1 ? `--共${ list.length - 1 }条对话` : '' }
                 </div>
               </div>
             </div>
