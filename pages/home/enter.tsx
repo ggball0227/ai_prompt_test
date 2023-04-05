@@ -29,7 +29,7 @@ const Home = () => {
   const [textarea, setTextarea] = useState("");
   // const [loading, setLoading] = useState(false);
   // const [chat, setChat] = useState("");
-  const [generatedChat, setGeneratedChat] = useState<String>("");
+  const [generatedChat, setGeneratedChat] = useState<string>("");
   const [list, setList] = useState<any>([
     {
       GPT: data["placeholder"],
@@ -65,7 +65,7 @@ const Home = () => {
       setList({ ...list, obj });
     }
     setObj({
-      GPT: "",
+      GPT: generatedChat,
       textarea: textarea,
     });
     setTextarea("");
@@ -198,7 +198,7 @@ const Home = () => {
                   </div>
                 );
               })}
-              <div className="home_chat-message-user__WsuiB">
+              { textarea && <div className="home_chat-message-user__WsuiB">
                 <div className="home_chat-message-container__plj_e u-flex">
                   <div className="home_chat-message-item__hDEOq">
                     <div className="markdown-body">
@@ -216,8 +216,8 @@ const Home = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="home_chat-message__rdH_g">
+              </div> }
+              { generatedChat && <div className="home_chat-message__rdH_g">
                 <div className="home_chat-message-container__plj_e u-flex">
                   <div className="home_chat-message-avatar__611lI">
                     {/* GPT头像 */}
@@ -254,7 +254,7 @@ const Home = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> }
               
             </div>
             {/* 聊天发送 */}
@@ -276,7 +276,7 @@ const Home = () => {
                   <div className="button_icon-button-icon__qlUH3 no-dark">
                     <SendOutlined />
                   </div>
-                  <div className="button_icon-button-text__k3vob">发送3</div>
+                  <div className="button_icon-button-text__k3vob">发送4</div>
                 </div>
               </div>
             </div>
