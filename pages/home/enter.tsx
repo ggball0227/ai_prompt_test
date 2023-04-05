@@ -7,6 +7,8 @@ import { Toaster, toast } from "react-hot-toast";
 import { reqCount } from "../api/backend";
 import getIp from "../../utils/ipUtil";
 import { marked } from "marked";
+import ResizablePanel from "../../components/ResizablePanel";
+import { AnimatePresence, motion } from "framer-motion";
 
 const { TextArea } = Input;
 
@@ -58,10 +60,10 @@ const Home = () => {
       throw new Error(countRes.message);
     }
     const obj = {
-      GPT: '',
-      textarea: textarea
-    }
-    setTextarea('')
+      GPT: "",
+      textarea: textarea,
+    };
+    setTextarea("");
     const response = await fetch("/api/generate", {
       method: "POST",
       headers: {
@@ -92,8 +94,8 @@ const Home = () => {
       done = doneReading;
       const chunkValue = decoder.decode(value).replace("<|im_end|>", "");
       setGeneratedChat((prev) => prev + chunkValue);
-      obj.GPT = (generatedChat + chunkValue)
-      setList({...list, obj})
+      obj.GPT = generatedChat + chunkValue;
+      setList({ ...list, obj });
     }
 
     setLoading(false);
@@ -168,7 +170,50 @@ const Home = () => {
                               </div>
                             </div>
                             <div className="markdown-body">
-                              <p
+                              <ResizablePanel>
+                                <AnimatePresence mode="wait">
+                                  <motion.div className="space-y-10 my-10">
+                                    {generatedChat && (
+                                      <>
+                                        <div>
+                                          <h2 className="sm:text-4xl text-3xl font-bold text-slate-900 mx-auto">
+                                            {"优化后的内容"}
+                                          </h2>
+                                        </div>
+                                        <div className="space-y-8 flex flex-col items-center justify-center max-w-xl mx-auto">
+                                          <div
+                                            className="bg-white rounded-xl shadow-md p-4 hover:bg-gray-100 transition cursor-copy border"
+                                            onClick={() => {
+                                              navigator.clipboard.writeText(
+                                                item.GPT.trim()
+                                              );
+                                              toast("已复制完内容", {
+                                                icon: "✂️",
+                                              });
+                                            }}
+                                          >
+                                            {/* <p className="sty1">{generatedChat}</p> */}
+                                            <p
+                                              className="sty1 markdown-body"
+                                              dangerouslySetInnerHTML={{
+                                                __html: marked(
+                                                  item.GPT.toString(),
+                                                  {
+                                                    gfm: true,
+                                                    breaks: true,
+                                                    smartypants: true,
+                                                  }
+                                                ),
+                                              }}
+                                            ></p>
+                                          </div>
+                                        </div>
+                                      </>
+                                    )}
+                                  </motion.div>
+                                </AnimatePresence>
+                              </ResizablePanel>
+                              {/* <p
                                 className="sty1 markdown-body"
                                 dangerouslySetInnerHTML={{
                                   __html: marked(item.GPT.toString(), {
@@ -177,7 +222,7 @@ const Home = () => {
                                     smartypants: true,
                                   }),
                                 }}
-                              ></p>
+                              ></p> */}
                               {/* <p>{item.GPT}</p> */}
                             </div>
                           </div>
