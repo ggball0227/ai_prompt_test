@@ -142,11 +142,7 @@ const Home = () => {
             </div>
             {/* 聊天内容 */}
             <div ref={value} className="home_chat-body__mbaM8">
-              {list.map((item: any, index: number) => {
-                return (
-                  <div key={index}>
-                    {(
-                      <div className="home_chat-message__rdH_g">
+            <div className="home_chat-message__rdH_g">
                         <div className="home_chat-message-container__plj_e u-flex">
                           <div className="home_chat-message-avatar__611lI">
                             {/* GPT头像 */}
@@ -168,16 +164,7 @@ const Home = () => {
                               </div>
                             </div>
                             <div className="markdown-body">
-                              { item.GPT ? <p
-                                className="sty1 markdown-body"
-                                dangerouslySetInnerHTML={{
-                                  __html: marked(item.GPT.toString(), {
-                                    gfm: true,
-                                    breaks: true,
-                                    smartypants: true,
-                                  }),
-                                }}
-                              ></p> : <ResizablePanel>
+                              {<ResizablePanel>
                               <AnimatePresence mode="wait">
                                 <motion.div className="space-y-10 my-10">
                                   {generatedChat && (
@@ -227,31 +214,6 @@ const Home = () => {
                           </div>
                         </div>
                       </div>
-                    )}
-                    {item.textarea && (
-                      <div className="home_chat-message-user__WsuiB">
-                        <div className="home_chat-message-container__plj_e u-flex">
-                          <div className="home_chat-message-item__hDEOq">
-                            <div className="markdown-body">
-                              <p>{item.textarea}</p>
-                            </div>
-                          </div>
-                          {/* <div className="home_chat-message-status__EsVNi">正在输入…</div> */}
-                          <div className="home_chat-message-avatar__611lI">
-                            <div className="home_user-avtar__3QksJ">
-                              <img
-                                src={arr[0]}
-                                alt="smiley"
-                                className="__EmojiPicker__ epr-emoji-img"
-                              ></img>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
             </div>
             {/* 聊天发送 */}
             <div className="home_chat-input-panel__kmhBn">
@@ -272,7 +234,7 @@ const Home = () => {
                   <div className="button_icon-button-icon__qlUH3 no-dark">
                     <SendOutlined />
                   </div>
-                  <div className="button_icon-button-text__k3vob">发送</div>
+                  <div className="button_icon-button-text__k3vob">发送1</div>
                 </div>
               </div>
             </div>
