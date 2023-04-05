@@ -63,6 +63,7 @@ const Home = () => {
       GPT: "",
       textarea: textarea,
     };
+    setList({ ...list, obj });
     setTextarea("");
     const response = await fetch("/api/generate", {
       method: "POST",
@@ -94,10 +95,7 @@ const Home = () => {
       done = doneReading;
       const chunkValue = decoder.decode(value).replace("<|im_end|>", "");
       setGeneratedChat((prev) => prev + chunkValue);
-      obj.GPT = generatedChat + chunkValue;
-      setList({ ...list, obj });
     }
-
     setLoading(false);
   };
 
@@ -147,14 +145,14 @@ const Home = () => {
               {list.map((item: any, index: number) => {
                 return (
                   <div key={index}>
-                    {item.GPT && (
+                    {(
                       <div className="home_chat-message__rdH_g">
                         <div className="home_chat-message-container__plj_e u-flex">
                           <div className="home_chat-message-avatar__611lI">
                             {/* GPT头像 */}
                             <div className="home_user-avtar__3QksJ">
                               <img
-                                src="https://inews.gtimg.com/newsapp_bt/0/15656366518/1000"
+                                src="/logo.png"
                                 alt="smiley"
                                 className="__EmojiPicker__ epr-emoji-img"
                               ></img>
@@ -170,50 +168,7 @@ const Home = () => {
                               </div>
                             </div>
                             <div className="markdown-body">
-                              <ResizablePanel>
-                                <AnimatePresence mode="wait">
-                                  <motion.div className="space-y-10 my-10">
-                                    {generatedChat && (
-                                      <>
-                                        <div>
-                                          <h2 className="sm:text-4xl text-3xl font-bold text-slate-900 mx-auto">
-                                            {"优化后的内容"}
-                                          </h2>
-                                        </div>
-                                        <div className="space-y-8 flex flex-col items-center justify-center max-w-xl mx-auto">
-                                          <div
-                                            className="bg-white rounded-xl shadow-md p-4 hover:bg-gray-100 transition cursor-copy border"
-                                            onClick={() => {
-                                              navigator.clipboard.writeText(
-                                                item.GPT.trim()
-                                              );
-                                              toast("已复制完内容", {
-                                                icon: "✂️",
-                                              });
-                                            }}
-                                          >
-                                            {/* <p className="sty1">{generatedChat}</p> */}
-                                            <p
-                                              className="sty1 markdown-body"
-                                              dangerouslySetInnerHTML={{
-                                                __html: marked(
-                                                  item.GPT.toString(),
-                                                  {
-                                                    gfm: true,
-                                                    breaks: true,
-                                                    smartypants: true,
-                                                  }
-                                                ),
-                                              }}
-                                            ></p>
-                                          </div>
-                                        </div>
-                                      </>
-                                    )}
-                                  </motion.div>
-                                </AnimatePresence>
-                              </ResizablePanel>
-                              {/* <p
+                              { item.GPT ? <p
                                 className="sty1 markdown-body"
                                 dangerouslySetInnerHTML={{
                                   __html: marked(item.GPT.toString(), {
@@ -222,7 +177,51 @@ const Home = () => {
                                     smartypants: true,
                                   }),
                                 }}
-                              ></p> */}
+                              ></p> : <ResizablePanel>
+                              <AnimatePresence mode="wait">
+                                <motion.div className="space-y-10 my-10">
+                                  {generatedChat && (
+                                    <>
+                                      <div>
+                                        <h2 className="sm:text-4xl text-3xl font-bold text-slate-900 mx-auto">
+                                          {"优化后的内容"}
+                                        </h2>
+                                      </div>
+                                      <div className="space-y-8 flex flex-col items-center justify-center max-w-xl mx-auto">
+                                        <div
+                                          className="bg-white rounded-xl shadow-md p-4 hover:bg-gray-100 transition cursor-copy border"
+                                          onClick={() => {
+                                            navigator.clipboard.writeText(
+                                              generatedChat.trim()
+                                            );
+                                            toast("已复制完内容", {
+                                              icon: "✂️",
+                                            });
+                                          }}
+                                        >
+                                          {/* <p className="sty1">{generatedChat}</p> */}
+                                          <p
+                                            className="sty1 markdown-body"
+                                            dangerouslySetInnerHTML={{
+                                              __html: marked(
+                                                generatedChat.toString(),
+                                                {
+                                                  gfm: true,
+                                                  breaks: true,
+                                                  smartypants: true,
+                                                }
+                                              ),
+                                            }}
+                                          ></p>
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
+                                </motion.div>
+                              </AnimatePresence>
+                            </ResizablePanel> }
+                              
+                              
                               {/* <p>{item.GPT}</p> */}
                             </div>
                           </div>
