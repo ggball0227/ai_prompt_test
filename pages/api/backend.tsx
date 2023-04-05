@@ -95,12 +95,21 @@ export const getPromptList = (status) =>
     },
   });
 
-export const reqCount = (ip) =>
-  fetch(`${api.baseURL}/api/userInfo/reqCount?ipAddress=${ip}`, {
+// export const reqCount = (ip) =>
+//   c_fetch(`${api.baseURL}/api/userInfo/reqCount?ipAddress=${ip}`, {
+//     credentials: "include",
+//     method: "GET",
+//     headers: {
+//       //  'Cookie': cookie,
+//       "Content-Type": "application/json",
+//     },
+//   });
+  export const reqCount = (ip) =>
+    fetch(`${api.baseURL}/api/userInfo/reqCount?ipAddress=${ip}`, {
     credentials: "include",
     method: "GET",
     headers: {
-      //  'Cookie': cookie,
+       'u-token': Cookies.get('cookie'),
       "Content-Type": "application/json",
     },
   });

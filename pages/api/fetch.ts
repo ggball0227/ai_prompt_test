@@ -11,8 +11,10 @@ function c_fetch(input: any, init: any) {
     init.method = "GET";
   }
   const token = Cookies.get("cookie") || '';
-  if (token) {
+  if (token && init.method === 'POST') {
     init.headers.set('u-token', token)
+  } else if (token && init.method === 'GET') {
+    init.headers = { ...init.headers, 'u-token': token }
   }
   //在原生fetch外面封装一个promise，为了在promise里面可以对fetch请求的结果做拦截处理。
   //同时，保证c_fetch函数返回的结果是个promise对象。

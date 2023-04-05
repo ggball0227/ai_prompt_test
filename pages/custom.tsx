@@ -68,7 +68,7 @@ const CardPage: NextPage = () => {
       return
     }
 
-    debugger
+    // debugger
     let countRes = await reqCount(getIp())
     await countRes.json()
     .then(json => {
@@ -91,7 +91,7 @@ const CardPage: NextPage = () => {
         }),
       })
     :
-      await fetch("/api/generate", {
+      await fetch("https://toolkit.show/tool/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
