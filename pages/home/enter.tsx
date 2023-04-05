@@ -99,6 +99,9 @@ const Home = () => {
   // 按钮按下事件
   const onKeyDown = (e) => {
     // console.log("e", e, e.keyCode);
+    if(e.keyCode === 13) {
+      generateChat()
+    }
   };
   const onKeyUp = (e) => {
     // console.log("e", e, e.keyCode);
@@ -251,7 +254,7 @@ const Home = () => {
                   onKeyDown={onKeyDown}
                   onKeyUp={onKeyUp}
                   rows={4}
-                  placeholder="输入消息"
+                  placeholder="输入消息，Enter 发送"
                 />
                 {/* <textarea className="home_chat-input__qM_hd" placeholder="输入消息，Ctrl + Enter 发送" rows="2"></textarea> */}
                 <div
@@ -261,7 +264,7 @@ const Home = () => {
                   <div className="button_icon-button-icon__qlUH3 no-dark">
                     <SendOutlined />
                   </div>
-                  <div className="button_icon-button-text__k3vob">发送5</div>
+                  <div className="button_icon-button-text__k3vob">发送</div>
                 </div>
               </div>
             </div>
