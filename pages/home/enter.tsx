@@ -142,78 +142,65 @@ const Home = () => {
             </div>
             {/* 聊天内容 */}
             <div ref={value} className="home_chat-body__mbaM8">
-            <div className="home_chat-message__rdH_g">
-                        <div className="home_chat-message-container__plj_e u-flex">
-                          <div className="home_chat-message-avatar__611lI">
-                            {/* GPT头像 */}
-                            <div className="home_user-avtar__3QksJ">
-                              <img
-                                src="/logo.png"
-                                alt="smiley"
-                                className="__EmojiPicker__ epr-emoji-img"
-                              ></img>
-                            </div>
-                          </div>
-                          <div className="home_chat-message-item__hDEOq">
-                            <div className="home_chat-message-top-actions__PfOzb">
-                              <div className="home_chat-message-top-action__wXKmA">
-                                重试
-                              </div>
-                              <div className="home_chat-message-top-action__wXKmA">
-                                重试
-                              </div>
-                            </div>
-                            <div className="markdown-body">
-                              {<ResizablePanel>
-                              <AnimatePresence mode="wait">
-                                <motion.div className="space-y-10 my-10">
-                                  {generatedChat && (
-                                    <>
-                                      <div>
-                                        <h2 className="sm:text-4xl text-3xl font-bold text-slate-900 mx-auto">
-                                          {"优化后的内容"}
-                                        </h2>
-                                      </div>
-                                      <div className="space-y-8 flex flex-col items-center justify-center max-w-xl mx-auto">
-                                        <div
-                                          className="bg-white rounded-xl shadow-md p-4 hover:bg-gray-100 transition cursor-copy border"
-                                          onClick={() => {
-                                            navigator.clipboard.writeText(
-                                              generatedChat.trim()
-                                            );
-                                            toast("已复制完内容", {
-                                              icon: "✂️",
-                                            });
-                                          }}
-                                        >
-                                          {/* <p className="sty1">{generatedChat}</p> */}
-                                          <p
-                                            className="sty1 markdown-body"
-                                            dangerouslySetInnerHTML={{
-                                              __html: marked(
-                                                generatedChat.toString(),
-                                                {
-                                                  gfm: true,
-                                                  breaks: true,
-                                                  smartypants: true,
-                                                }
-                                              ),
-                                            }}
-                                          ></p>
-                                        </div>
-                                      </div>
-                                    </>
-                                  )}
-                                </motion.div>
-                              </AnimatePresence>
-                            </ResizablePanel> }
-                              
-                              
-                              {/* <p>{item.GPT}</p> */}
-                            </div>
-                          </div>
-                        </div>
+              <div className="home_chat-message__rdH_g">
+                <div className="home_chat-message-container__plj_e u-flex">
+                  <div className="home_chat-message-avatar__611lI">
+                    {/* GPT头像 */}
+                    <div className="home_user-avtar__3QksJ">
+                      <img
+                        src="/logo.png"
+                        alt="smiley"
+                        className="__EmojiPicker__ epr-emoji-img"
+                      ></img>
+                    </div>
+                  </div>
+                  <div className="home_chat-message-item__hDEOq">
+                    <div className="home_chat-message-top-actions__PfOzb">
+                      <div className="home_chat-message-top-action__wXKmA">
+                        重试
                       </div>
+                      <div className="home_chat-message-top-action__wXKmA">
+                        重试
+                      </div>
+                    </div>
+                    <div className="markdown-body">
+                      { 
+                      <p
+                      className="sty1 markdown-body"
+                      dangerouslySetInnerHTML={{
+                        __html: marked(generatedChat.toString(), {
+                          gfm: true,
+                          breaks: true,
+                          smartypants: true,
+                        }),
+                      }}
+                    ></p> }
+                      
+
+                      {/* <p>{item.GPT}</p> */}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="home_chat-message-user__WsuiB">
+                <div className="home_chat-message-container__plj_e u-flex">
+                  <div className="home_chat-message-item__hDEOq">
+                    <div className="markdown-body">
+                      <p>{textarea}</p>
+                    </div>
+                  </div>
+                  {/* <div className="home_chat-message-status__EsVNi">正在输入…</div> */}
+                  <div className="home_chat-message-avatar__611lI">
+                    <div className="home_user-avtar__3QksJ">
+                      <img
+                        src={arr[0]}
+                        alt="smiley"
+                        className="__EmojiPicker__ epr-emoji-img"
+                      ></img>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             {/* 聊天发送 */}
             <div className="home_chat-input-panel__kmhBn">
@@ -234,7 +221,7 @@ const Home = () => {
                   <div className="button_icon-button-icon__qlUH3 no-dark">
                     <SendOutlined />
                   </div>
-                  <div className="button_icon-button-text__k3vob">发送1</div>
+                  <div className="button_icon-button-text__k3vob">发送2</div>
                 </div>
               </div>
             </div>
