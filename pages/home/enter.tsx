@@ -7,8 +7,6 @@ import { Toaster, toast } from "react-hot-toast";
 import { reqCount } from "../api/backend";
 import getIp from "../../utils/ipUtil";
 import { marked } from "marked";
-import ResizablePanel from "../../components/ResizablePanel";
-import { AnimatePresence, motion } from "framer-motion";
 
 const { TextArea } = Input;
 
@@ -29,7 +27,7 @@ const Home = () => {
 
   const value = useRef<any>(null);
   const [textarea, setTextarea] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   // const [chat, setChat] = useState("");
   const [generatedChat, setGeneratedChat] = useState<String>("");
   const [list, setList] = useState<any>([
@@ -38,6 +36,10 @@ const Home = () => {
       textarea: "",
     },
   ]);
+  const [obj, setObj] = useState({
+    GPT: "",
+    textarea: "",
+  });
 
   const prompt = data["prompt"] + `${textarea}`;
 
@@ -45,10 +47,10 @@ const Home = () => {
     // console.log("kaishi1");
     // e.preventDefault();
     setGeneratedChat("");
-    setLoading(true);
+    // setLoading(true);
     if (textarea === "") {
       toast.error("内容不能为空");
-      setLoading(false);
+      // setLoading(false);
       return;
     }
 
@@ -56,14 +58,16 @@ const Home = () => {
     console.log("countRes", countRes);
     if (countRes.status != 200) {
       toast.error(countRes.message);
-      setLoading(false);
+      // setLoading(false);
       throw new Error(countRes.message);
     }
-    const obj = {
+    if (obj.GPT && obj.textarea) {
+      setList({ ...list, obj });
+    }
+    setObj({
       GPT: "",
       textarea: textarea,
-    };
-    setList({ ...list, obj });
+    });
     setTextarea("");
     const response = await fetch("/api/generate", {
       method: "POST",
@@ -77,7 +81,7 @@ const Home = () => {
 
     if (!response.ok) {
       toast.error("服务繁忙，请稍后再试");
-      setLoading(false);
+      // setLoading(false);
       return;
     }
 
@@ -96,7 +100,7 @@ const Home = () => {
       const chunkValue = decoder.decode(value).replace("<|im_end|>", "");
       setGeneratedChat((prev) => prev + chunkValue);
     }
-    setLoading(false);
+    // setLoading(false);
   };
 
   // 按钮按下事件
@@ -142,6 +146,77 @@ const Home = () => {
             </div>
             {/* 聊天内容 */}
             <div ref={value} className="home_chat-body__mbaM8">
+              {list.map((item: any, index) => {
+                return (
+                  <div key={index}>
+                    <div className="home_chat-message__rdH_g">
+                      <div className="home_chat-message-container__plj_e u-flex">
+                        <div className="home_chat-message-avatar__611lI">
+                          {/* GPT头像 */}
+                          <div className="home_user-avtar__3QksJ">
+                            <img
+                              src="/logo.png"
+                              alt="smiley"
+                              className="__EmojiPicker__ epr-emoji-img"
+                            ></img>
+                          </div>
+                        </div>
+                        <div className="home_chat-message-item__hDEOq">
+                          <div className="home_chat-message-top-actions__PfOzb">
+                            <div className="home_chat-message-top-action__wXKmA">
+                              重试
+                            </div>
+                            <div className="home_chat-message-top-action__wXKmA">
+                              重试
+                            </div>
+                          </div>
+                          <div className="markdown-body">
+                            <p>{item.GPT}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="home_chat-message-user__WsuiB">
+                      <div className="home_chat-message-container__plj_e u-flex">
+                        <div className="home_chat-message-item__hDEOq">
+                          <div className="markdown-body">
+                            <p>{item.textarea}</p>
+                          </div>
+                        </div>
+                        {/* <div className="home_chat-message-status__EsVNi">正在输入…</div> */}
+                        <div className="home_chat-message-avatar__611lI">
+                          <div className="home_user-avtar__3QksJ">
+                            <img
+                              src={arr[0]}
+                              alt="smiley"
+                              className="__EmojiPicker__ epr-emoji-img"
+                            ></img>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+              <div className="home_chat-message-user__WsuiB">
+                <div className="home_chat-message-container__plj_e u-flex">
+                  <div className="home_chat-message-item__hDEOq">
+                    <div className="markdown-body">
+                      <p>{textarea}</p>
+                    </div>
+                  </div>
+                  {/* <div className="home_chat-message-status__EsVNi">正在输入…</div> */}
+                  <div className="home_chat-message-avatar__611lI">
+                    <div className="home_user-avtar__3QksJ">
+                      <img
+                        src={arr[0]}
+                        alt="smiley"
+                        className="__EmojiPicker__ epr-emoji-img"
+                      ></img>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="home_chat-message__rdH_g">
                 <div className="home_chat-message-container__plj_e u-flex">
                   <div className="home_chat-message-avatar__611lI">
@@ -164,43 +239,23 @@ const Home = () => {
                       </div>
                     </div>
                     <div className="markdown-body">
-                      { 
-                      <p
-                      className="sty1 markdown-body"
-                      dangerouslySetInnerHTML={{
-                        __html: marked(generatedChat.toString(), {
-                          gfm: true,
-                          breaks: true,
-                          smartypants: true,
-                        }),
-                      }}
-                    ></p> }
-                      
-
-                      {/* <p>{item.GPT}</p> */}
+                      {
+                        <p
+                          className="sty1 markdown-body"
+                          dangerouslySetInnerHTML={{
+                            __html: marked(generatedChat.toString(), {
+                              gfm: true,
+                              breaks: true,
+                              smartypants: true,
+                            }),
+                          }}
+                        ></p>
+                      }
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="home_chat-message-user__WsuiB">
-                <div className="home_chat-message-container__plj_e u-flex">
-                  <div className="home_chat-message-item__hDEOq">
-                    <div className="markdown-body">
-                      <p>{textarea}</p>
-                    </div>
-                  </div>
-                  {/* <div className="home_chat-message-status__EsVNi">正在输入…</div> */}
-                  <div className="home_chat-message-avatar__611lI">
-                    <div className="home_user-avtar__3QksJ">
-                      <img
-                        src={arr[0]}
-                        alt="smiley"
-                        className="__EmojiPicker__ epr-emoji-img"
-                      ></img>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
             </div>
             {/* 聊天发送 */}
             <div className="home_chat-input-panel__kmhBn">
@@ -221,7 +276,7 @@ const Home = () => {
                   <div className="button_icon-button-icon__qlUH3 no-dark">
                     <SendOutlined />
                   </div>
-                  <div className="button_icon-button-text__k3vob">发送2</div>
+                  <div className="button_icon-button-text__k3vob">发送3</div>
                 </div>
               </div>
             </div>
