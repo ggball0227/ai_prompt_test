@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export function IconButton(props: {
+export default function IconButton(props: {
   onClick?: () => void;
   icon?: JSX.Element;
   text?: string;
@@ -12,9 +12,7 @@ export function IconButton(props: {
 }) {
   return (
     <div onClick={props.onClick} title={props.title} role="button">
-      <div>
-          { props.icon ? props.icon : '' }
-      </div>
+      <div>{props.icon ? props.icon : ""}</div>
       {props.text && <div>{props.text}</div>}
     </div>
   );

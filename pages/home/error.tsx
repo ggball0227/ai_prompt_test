@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton } from "./button";
+import IconButton from "./button";
 
 interface IErrorBoundaryState {
   hasError: boolean;
@@ -7,7 +7,10 @@ interface IErrorBoundaryState {
   info: React.ErrorInfo | null;
 }
 
-export class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
+export default class ErrorBoundary extends React.Component<
+  any,
+  IErrorBoundaryState
+> {
   constructor(props: any) {
     super(props);
     this.state = { hasError: false, error: null, info: null };
@@ -29,10 +32,7 @@ export class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
           </pre>
 
           <a href={""} className="report">
-            <IconButton
-              text="Report This Error"
-              bordered
-            />
+            <IconButton text="Report This Error" bordered />
           </a>
         </div>
       );
