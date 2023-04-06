@@ -110,6 +110,7 @@ export const getPromptList = (status) =>
     method: "GET",
     headers: {
        'u-token': Cookies.get('cookie'),
+       'Cookie': Cookies.get('cookie'),
       "Content-Type": "application/json",
     },
   });
