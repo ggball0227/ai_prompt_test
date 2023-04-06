@@ -32,13 +32,14 @@ export default function Nav() {
         return;
       }
       console.log('data.data ', data )
-      if (data.data && Cookies.get("cookie")) {
+      if (data.data && Cookies.get("cookie") && Cookies.get("u-token")) {
         setShowLoginBtn(false)
         saveUser(data.data);
         setUser(data.data);
       } else {
         setShowLoginBtn(true)
         Cookies.remove('cookie')
+        Cookies.remove('u-token')
         removeUser()
       }
     });
