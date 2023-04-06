@@ -51,7 +51,7 @@ const Home = () => {
     }
 
     let countRes: any = await reqCount(getIp());
-    console.log("countRes", countRes);
+    console.log("countRes", countRes.data);
     if (countRes.status != 200) {
       toast.error(countRes.message);
       // setLoading(false);
