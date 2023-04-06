@@ -54,6 +54,7 @@ export default function Nav() {
   const handelLogout = () => {
     setShowLoginBtn(true)
     Cookies.remove('cookie')
+    Cookies.remove('u-token')
     removeUser()
     toast.success("退出成功！");
   };
