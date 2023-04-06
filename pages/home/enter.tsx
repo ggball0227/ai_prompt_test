@@ -51,12 +51,14 @@ const Home = () => {
     }
 
     let countRes: any = await reqCount(getIp());
-    console.log("countRes", countRes, countRes.json());
-    if (countRes.status != 200) {
-      toast.error(countRes.message);
-      // setLoading(false);
-      throw new Error(countRes.message);
-    }
+    await countRes.json()
+    .then(json => {
+      console.log('json', json)
+      if(countRes.ok && json.status != 200) {
+        toast.error(json.message)
+        throw  new Error(json.message)
+      }
+    })
     setList([...list, {
       GPT: generatedChat,
       textarea: textarea
