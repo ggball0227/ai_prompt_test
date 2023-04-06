@@ -24,6 +24,7 @@ function c_fetch(input: any, init: any) {
       .then((res: any) => {
         // console.log('res1', res, res.headers.get('cookie'))
         if(res.headers.get('cookie') && res.url.includes('/login/login')) {
+          console.log('aaa', res.headers.get('cookie'))
           Cookies.set('cookie', res.headers.get('cookie'))
         }
         //将拦截器处理后的响应结果resolve出去
