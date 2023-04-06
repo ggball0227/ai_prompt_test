@@ -23,7 +23,7 @@ function c_fetch(input: any, init: any) {
     fetch(input, init)
       .then((res: any) => {
         // console.log('res1', res, res.headers.get('cookie'))
-        if(res.headers.get('cookie')) {
+        if(res.headers.get('cookie') && res.url.includes('/login/login')) {
           Cookies.set('cookie', res.headers.get('cookie'))
         }
         //将拦截器处理后的响应结果resolve出去

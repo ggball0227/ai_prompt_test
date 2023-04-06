@@ -56,6 +56,7 @@ const Home = () => {
       console.log('json', json)
       if(countRes.ok && json.status != 200) {
         toast.error(json.message)
+        router.replace('/')
         throw  new Error(json.message)
       }
     })
