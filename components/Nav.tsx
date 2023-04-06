@@ -32,14 +32,14 @@ export default function Nav() {
         return;
       }
       console.log('data.data ', data )
-      if (data.data && Cookies.get("cookie") && Cookies.get("u-token")) {
+      if (data.data && Cookies.get("cookie")) {
         setShowLoginBtn(false)
         saveUser(data.data);
         setUser(data.data);
       } else {
         setShowLoginBtn(true)
         Cookies.remove('cookie')
-        Cookies.remove('u-token')
+        // Cookies.remove('u-token')
         removeUser()
       }
     });
@@ -55,7 +55,7 @@ export default function Nav() {
   const handelLogout = () => {
     setShowLoginBtn(true)
     Cookies.remove('cookie')
-    Cookies.remove('u-token')
+    // Cookies.remove('u-token')
     removeUser()
     toast.success("退出成功！");
   };
