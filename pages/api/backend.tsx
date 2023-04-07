@@ -51,7 +51,6 @@ export const getUsers = () => {
  * @api /tool/api/pay/gpt/package/list
  */
 
-
 export const registerUser = (data) =>
   fetch(`${api.baseURL}/login/register`, {
     method: "POST",
@@ -84,6 +83,14 @@ export const getPromptTypeList = () =>
       "Content-Type": "application/json",
     },
   });
+export const icrPromptView = (id) =>
+  fetch(`${api.baseURL}/api/prompt/icr/view?id=${id}`, {
+    credentials: "include",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
 export const getPromptList = (status) =>
   fetch(`${api.baseURL}/api/prompt/list?status=${status}`, {
@@ -104,12 +111,12 @@ export const getPromptList = (status) =>
 //       "Content-Type": "application/json",
 //     },
 //   });
-  export const reqCount = (ip) =>
-    fetch(`${api.baseURL}/api/userInfo/reqCount?ipAddress=${ip}`, {
+export const reqCount = (ip) =>
+  fetch(`${api.baseURL}/api/userInfo/reqCount?ipAddress=${ip}`, {
     credentials: "include",
     method: "GET",
     headers: {
-       'u-token': Cookies.get('cookie'),
+      "u-token": Cookies.get("cookie"),
       "Content-Type": "application/json",
     },
   });

@@ -4,7 +4,7 @@ import { Input } from "antd";
 import { useRouter } from "next/router";
 import { retrievePrompts } from "../../utils/store";
 import { Toaster, toast } from "react-hot-toast";
-import { reqCount } from "../api/backend";
+import { icrPromptView, reqCount } from "../api/backend";
 import getIp from "../../utils/ipUtil";
 import { marked } from "marked";
 
@@ -24,6 +24,9 @@ const Home = () => {
   } else {
     return <></>;
   }
+
+  // 增加阅读次数
+  icrPromptView(data["id"]);
 
   const value = useRef<any>(null);
   const [textarea, setTextarea] = useState("");
@@ -57,10 +60,13 @@ const Home = () => {
       // setLoading(false);
       throw new Error(countRes.message);
     }
-    setList([...list, {
-      GPT: generatedChat,
-      textarea: textarea
-    }])
+    setList([
+      ...list,
+      {
+        GPT: generatedChat,
+        textarea: textarea,
+      },
+    ]);
     setTextarea("");
     const response = await fetch("/api/generate", {
       method: "POST",
@@ -99,8 +105,8 @@ const Home = () => {
   // 按钮按下事件
   const onKeyDown = (e) => {
     // console.log("e", e, e.keyCode);
-    if(e.keyCode === 13) {
-      generateChat()
+    if (e.keyCode === 13) {
+      generateChat();
     }
   };
   const onKeyUp = (e) => {
@@ -133,7 +139,8 @@ const Home = () => {
                   {data["title"]}
                 </div>
                 <div className="home_window-header-sub-title__9rZM1">
-                  {data["slogan"]}  { list.length - 1 ? `--共${ list.length - 1 }条对话` : '' }
+                  {data["slogan"]}{" "}
+                  {list.length - 1 ? `--共${list.length - 1}条对话` : ""}
                 </div>
               </div>
             </div>
@@ -142,68 +149,72 @@ const Home = () => {
               {list.map((item: any, index) => {
                 return (
                   <div key={index}>
-                    { item.GPT && <div className="home_chat-message__rdH_g">
-                      <div className="home_chat-message-container__plj_e u-flex">
-                        <div className="home_chat-message-avatar__611lI">
-                          {/* GPT头像 */}
-                          <div className="home_user-avtar__3QksJ">
-                            <img
-                              src="/logo.png"
-                              alt="smiley"
-                              className="__EmojiPicker__ epr-emoji-img"
-                            ></img>
-                          </div>
-                        </div>
-                        <div className="home_chat-message-item__hDEOq">
-                          <div className="home_chat-message-top-actions__PfOzb">
-                            <div className="home_chat-message-top-action__wXKmA">
-                              重试
-                            </div>
-                            <div className="home_chat-message-top-action__wXKmA">
-                              重试
+                    {item.GPT && (
+                      <div className="home_chat-message__rdH_g">
+                        <div className="home_chat-message-container__plj_e u-flex">
+                          <div className="home_chat-message-avatar__611lI">
+                            {/* GPT头像 */}
+                            <div className="home_user-avtar__3QksJ">
+                              <img
+                                src="/logo.png"
+                                alt="smiley"
+                                className="__EmojiPicker__ epr-emoji-img"
+                              ></img>
                             </div>
                           </div>
-                          <div className="markdown-body">
-                            {
-                              <p
-                                className="sty1 markdown-body"
-                                dangerouslySetInnerHTML={{
-                                  __html: marked(item.GPT.toString(), {
-                                    gfm: true,
-                                    breaks: true,
-                                    smartypants: true,
-                                  }),
-                                }}
-                              ></p>
-                            }
-                            {/* <p>{item.GPT}</p> */}
+                          <div className="home_chat-message-item__hDEOq">
+                            <div className="home_chat-message-top-actions__PfOzb">
+                              <div className="home_chat-message-top-action__wXKmA">
+                                重试
+                              </div>
+                              <div className="home_chat-message-top-action__wXKmA">
+                                重试
+                              </div>
+                            </div>
+                            <div className="markdown-body">
+                              {
+                                <p
+                                  className="sty1 markdown-body"
+                                  dangerouslySetInnerHTML={{
+                                    __html: marked(item.GPT.toString(), {
+                                      gfm: true,
+                                      breaks: true,
+                                      smartypants: true,
+                                    }),
+                                  }}
+                                ></p>
+                              }
+                              {/* <p>{item.GPT}</p> */}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div> }
-                    { item.textarea && <div className="home_chat-message-user__WsuiB">
-                      <div className="home_chat-message-container__plj_e u-flex">
-                        <div className="home_chat-message-item__hDEOq">
-                          <div className="markdown-body">
-                            <p>{item.textarea}</p>
+                    )}
+                    {item.textarea && (
+                      <div className="home_chat-message-user__WsuiB">
+                        <div className="home_chat-message-container__plj_e u-flex">
+                          <div className="home_chat-message-item__hDEOq">
+                            <div className="markdown-body">
+                              <p>{item.textarea}</p>
+                            </div>
                           </div>
-                        </div>
-                        {/* <div className="home_chat-message-status__EsVNi">正在输入…</div> */}
-                        <div className="home_chat-message-avatar__611lI">
-                          <div className="home_user-avtar__3QksJ">
-                            <img
-                              src={arr[0]}
-                              alt="smiley"
-                              className="__EmojiPicker__ epr-emoji-img"
-                            ></img>
+                          {/* <div className="home_chat-message-status__EsVNi">正在输入…</div> */}
+                          <div className="home_chat-message-avatar__611lI">
+                            <div className="home_user-avtar__3QksJ">
+                              <img
+                                src={arr[0]}
+                                alt="smiley"
+                                className="__EmojiPicker__ epr-emoji-img"
+                              ></img>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div> }
+                    )}
                   </div>
                 );
               })}
-              
+
               {generatedChat && (
                 <div className="home_chat-message__rdH_g">
                   <div className="home_chat-message-container__plj_e u-flex">
