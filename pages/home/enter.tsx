@@ -25,10 +25,10 @@ const Home = () => {
     return <></>;
   }
 
-  // 增加阅读次数1
-  icrPromptView(data["id"]);
+
 
   const value = useRef<any>(null);
+  const [uid, setUid] = useState('')
   const [textarea, setTextarea] = useState("");
   // const [loading, setLoading] = useState(false);
   // const [chat, setChat] = useState("");
@@ -122,6 +122,14 @@ const Home = () => {
   useEffect(() => {
     value.current.scrollTop = value.current.scrollHeight;
   }, [generatedChat]);
+  useEffect(() => {
+    if(uid) {
+      // 增加阅读次数1
+      icrPromptView(uid);
+    } else {
+      setUid(data["id"])
+    }
+  }, [uid])
 
   return (
     <div className="home">
