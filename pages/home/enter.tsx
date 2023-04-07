@@ -54,6 +54,7 @@ const Home = () => {
     }
 
     let countRes: any = await reqCount(getIp());
+<<<<<<< HEAD
     console.log("countRes", countRes);
     if (countRes.status != 200) {
       toast.error(countRes.message);
@@ -67,6 +68,21 @@ const Home = () => {
         textarea: textarea,
       },
     ]);
+=======
+    await countRes.json()
+    .then(json => {
+      console.log('json', json)
+      if(countRes.ok && json.status != 200) {
+        toast.error(json.message)
+        router.replace('/')
+        throw  new Error(json.message)
+      }
+    })
+    setList([...list, {
+      GPT: generatedChat,
+      textarea: textarea
+    }])
+>>>>>>> fe6fa18c855996a84407a27af095fbd127f211a2
     setTextarea("");
     const response = await fetch("/api/generate", {
       method: "POST",

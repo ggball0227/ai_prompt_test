@@ -108,6 +108,7 @@ export const getPromptList = (status) =>
 //     method: "GET",
 //     headers: {
 //       //  'Cookie': cookie,
+//       'Cookie': Cookies.get('cookie'),
 //       "Content-Type": "application/json",
 //     },
 //   });
@@ -116,7 +117,12 @@ export const reqCount = (ip) =>
     credentials: "include",
     method: "GET",
     headers: {
+<<<<<<< HEAD
       "u-token": Cookies.get("cookie"),
+=======
+       'u-token': Cookies.get('cookie'),
+       'Cookie': Cookies.get('cookie'),
+>>>>>>> fe6fa18c855996a84407a27af095fbd127f211a2
       "Content-Type": "application/json",
     },
   });
