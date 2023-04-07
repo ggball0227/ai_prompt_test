@@ -25,7 +25,7 @@ const Home = () => {
     return <></>;
   }
 
-  // 增加阅读次数
+  // 增加阅读次数1
   icrPromptView(data["id"]);
 
   const value = useRef<any>(null);
