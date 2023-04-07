@@ -21,7 +21,7 @@ function Home() {
         <div className="container mx-auto pb-10 pt-4">
           <CardJson />
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </>
   );
