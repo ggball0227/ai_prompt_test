@@ -9,8 +9,7 @@ export default function Card({ index, value }) {
   console.log(t);
   return (
     <Link
-      className="rounded-lg bg-white shadow-xl shadow-black/5 ring-1 ring-slate-700/10 relative "
-      style={{zIndex: 1}}
+      className="rounded-lg bg-white shadow-xl shadow-black/5 ring-1 ring-slate-700/10"
       href={{ pathname: "/home/enter", query: { index: index } }}
     >
       <div className="flex flex-col p-4">
@@ -19,10 +18,13 @@ export default function Card({ index, value }) {
         </div>
         <span className="mt-4 text-sm text-gray-500">{t["slogan"]}</span>
       </div>
-      <div className=" absolute bottom-0 right-0 w-15 text-sm">
-        <FontAwesomeIcon icon={faEye} className="text-gray-400" />
-        <span className="text-gray-400 mx-1">{t["viewCount"]}</span>
-      </div>
+      {/* <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <div></div>
+        <div className="relative">
+          <FontAwesomeIcon icon={faEye} className="text-gray-400" />
+          <span className="text-gray-400 mx-1">{t["viewCount"]}</span>
+        </div>
+      </div> */}
     </Link>
   );
 }
