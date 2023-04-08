@@ -10,6 +10,7 @@ export default function Card({ index, value }) {
   return (
     <Link
       className="rounded-lg bg-white shadow-xl shadow-black/5 ring-1 ring-slate-700/10 relative "
+      style={{zIndex: -1}}
       href={{ pathname: "/home/enter", query: { index: index } }}
     >
       <div className="flex flex-col p-4">
