@@ -26,7 +26,6 @@ const Home = () => {
   }
 
 
-
   const value = useRef<any>(null);
   const [uid, setUid] = useState('')
   const [textarea, setTextarea] = useState("");
@@ -41,6 +40,9 @@ const Home = () => {
   ]);
 
   const prompt = data["prompt"] + `${textarea}`;
+  const user = () => {
+    return JSON.parse(localStorage.getItem('user') as never)
+  }
 
   const generateChat = async () => {
     // console.log("kaishi1");
@@ -151,6 +153,7 @@ const Home = () => {
                 <div className="home_window-header-sub-title__9rZM1">
                   {data["slogan"]}{" "}
                   {list.length - 1 ? `--共${list.length - 1}条对话` : ""}
+                  { `--剩余对话次数：${user()?.numberTimes}次` }
                 </div>
               </div>
             </div>
