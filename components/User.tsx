@@ -206,7 +206,7 @@ export function RegisterForm() {
   const router = useRouter();
 
   const [isSending, setIsSending] = useState(false);
-  const [countdown, setCountdown] = useState(30);
+  const [countdown, setCountdown] = useState(60);
 
   useEffect(() => {
     let intervalId;
@@ -216,14 +216,13 @@ export function RegisterForm() {
       }, 1000);
     } else if (countdown === 0) {
       setIsSending(false);
-      setCountdown(30);
+      setCountdown(60);
     }
 
     return () => clearInterval(intervalId);
   }, [isSending, countdown]);
 
   const handleSendCode = () => {
-    setIsSending(true);
     const phoneNumber = (
       document.getElementById("phoneNumber") as HTMLInputElement
     ).value;
@@ -241,6 +240,7 @@ export function RegisterForm() {
           toast.error(data.message);
           return;
         }
+        setIsSending(true);
         toast.success("验证码发送成功！");
       })
       .catch((e) => {
